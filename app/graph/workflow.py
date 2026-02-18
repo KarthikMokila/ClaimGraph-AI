@@ -22,8 +22,7 @@ def build_workflow():
     workflow.add_edge("segregator", "discharge_agent")
     workflow.add_edge("segregator", "bill_agent")
 
-    workflow.add_edge("id_agent", "aggregator")
-    workflow.add_edge("discharge_agent", "aggregator")
+
     workflow.add_edge("bill_agent", "aggregator")
 
     workflow.set_finish_point("aggregator")
