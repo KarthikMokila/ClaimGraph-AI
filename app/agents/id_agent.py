@@ -11,8 +11,7 @@ async def id_agent_node(state: ClaimState) -> ClaimState:
     identity_pages = segregated.get("identity_document", [])
 
     if not identity_pages:
-        state["identity_pages"] = None
-        return state
+        return {"identity_data": None}
     
     combined_text = "\n\n".join(identity_pages)
 
@@ -34,8 +33,6 @@ async def id_agent_node(state: ClaimState) -> ClaimState:
                     """
 
     structured_llm = llm.with_structured_output(IdentityInfo)
-    result = structured_llm.invoke(prompt)
+    result = await structured_llm.ainvoke(prompt)
 
-    state["identity_data"] =result.model_dump()
-
-    return state
+    return {"identity_data": result.model_dump()}

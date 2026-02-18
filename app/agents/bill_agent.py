@@ -11,8 +11,7 @@ async def bill_agent_node(state: ClaimState) -> ClaimState:
 
 
     if not bill_pages:
-        state["itemized_bill"] = None
-        return state
+        return {"bill_data": None}
     
     combined_text = "\n\n".join(bill_pages)
 
@@ -34,7 +33,7 @@ async def bill_agent_node(state: ClaimState) -> ClaimState:
     
     structured_llm = llm.with_structured_output(ItemizedBill)
 
-    result = structured_llm.invoke(prompt)
+    result = await structured_llm.ainvoke(prompt)
 
     items = result.items
 
@@ -42,11 +41,11 @@ async def bill_agent_node(state: ClaimState) -> ClaimState:
         item.amount for item in items if item.amount is not None
     )
 
-    state["bill_data"] = {
-        "items": [item.model_dump() for item in items],
-        "total_amount": total_amount
+    return {
+        "bill_data": {
+            "items": [item.model_dump() for item in items],
+            "total_amount": total_amount
+        }
     }
-
-    return state
 
 

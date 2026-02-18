@@ -1,7 +1,7 @@
 from langgraph.graph  import StateGraph
 from app.schemas.state import ClaimState
 from app.agents.segregator import segregator_node
-from apps.agents.id_agent import id_agent_node
+from app.agents.id_agent import id_agent_node
 from app.agents.discharge_agent import discharge_agent_node
 from app.agents.bill_agent import bill_agent_node
 from app.services.aggregator import aggregator_node
@@ -44,7 +44,7 @@ async def run_claim_workflow(claim_id: str, pages: list[str]):
         "final_output": None
     }
 
-    result = await workflow.invoke(initial_state)
+    result = await workflow.ainvoke(initial_state)
     return result['final_output']
 
 

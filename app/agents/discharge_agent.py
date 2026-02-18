@@ -13,8 +13,7 @@ async def discharge_agent_node(state: ClaimState) -> ClaimState:
     discharge_pages = segregated.get("discharge_summary", [])
 
     if not discharge_pages:
-        state["discharge_summary"] = None
-        return state
+        return {"discharge_data": None}
     
     combined_text = "\n\n".join(discharge_pages)
 
@@ -40,8 +39,6 @@ async def discharge_agent_node(state: ClaimState) -> ClaimState:
                     """
 
     structured_llm = llm.with_structured_output(DischargeSummary)
-    result = structured_llm.invoke(prompt)
+    result = await structured_llm.ainvoke(prompt)
 
-    state["discharge_summary"] =result.model_dump()
-
-    return state
+    return {"discharge_data": result.model_dump()}

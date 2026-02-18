@@ -39,7 +39,7 @@ async def segregator_node(state: ClaimState) -> ClaimState:
 
     structured_llm = llm.with_structured_output(BatchClassification)
 
-    result = structured_llm.invoke(prompt)
+    result = await structured_llm.ainvoke(prompt)
 
     segregated: Dict[str, List[str]] = {}
 
@@ -52,6 +52,4 @@ async def segregator_node(state: ClaimState) -> ClaimState:
 
         segregated[doc_type].append(pages[page_number])
 
-    state["segregated_pages"] = segregated
-
-    return state
+    return {"segregated_pages": segregated}

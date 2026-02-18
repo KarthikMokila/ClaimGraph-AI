@@ -7,6 +7,4 @@ async def aggregator_node(state: ClaimState) -> ClaimState:
         "discharge_summary": state.get("discharge_data"),
         "bill": state.get("bill_data")
     }
-    state["final_output"] = final_output
-
-    return state
+    return {"final_output": final_output}
